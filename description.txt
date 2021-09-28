@@ -13,5 +13,8 @@ Currently craftable:
 Planned additions:
 	Herb crafting compatibility with Thorium, Shadows of Abbadon and Spirit mod
 
+Changelog:
+	1.1.0.4 added icon
+
 thanks to:
 	direwolf420 for pointing out a correct way to go about crafting conditions
