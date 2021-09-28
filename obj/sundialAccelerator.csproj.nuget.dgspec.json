@@ -1,0 +1,57 @@
+{
+  "format": 1,
+  "restore": {
+    "c:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\sundialAccelerator.csproj": {}
+  },
+  "projects": {
+    "c:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\sundialAccelerator.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "c:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\sundialAccelerator.csproj",
+        "projectName": "sundialAccelerator",
+        "projectPath": "c:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\sundialAccelerator.csproj",
+        "packagesPath": "C:\\Users\\garfield\\.nuget\\packages\\",
+        "outputPath": "c:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\garfield\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net45"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net45": {
+            "targetAlias": "net45",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net45": {
+          "targetAlias": "net45",
+          "dependencies": {
+            "tModLoader.CodeAssist": {
+              "target": "Package",
+              "version": "[0.1.*, )"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

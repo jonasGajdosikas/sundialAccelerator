@@ -1,0 +1,17 @@
+Have you ever been waiting for your resouces to grow?
+Have you ever wanted more use from the Enchanted Sundial?
+Fret not, for this mod adds more usefulness to the sundial. You can use it to accelerate the gathering of naturally growing resources
+
+Every time you craft something it adds 1 day to the sundial cooldown, craft too much and you will have to wait for the next day.
+
+Currently craftable: 
+    all types of wood in their respective biomes from acorns,
+    chlorophyte from chlorophyte and mud,
+    pumpkins from pumpkin seeds,
+    naturally growing items in their respective places: 
+        herbs only when they bloom, cacti, seashells, corals and starfish
+Planned additions:
+	Herb crafting compatibility with Thorium, Shadows of Abbadon and Spirit mod
+
+thanks to:
+	direwolf420 for pointing out a correct way to go about crafting conditions
