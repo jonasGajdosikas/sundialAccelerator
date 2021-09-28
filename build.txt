@@ -1,5 +1,5 @@
-displayName = Sundial Temporal Crafting
 author = 20jonas02
 version = 1.1.0.3
+displayName = Sundial Temporal Crafting
 homepage = https://forums.terraria.org/index.php?threads/sundial-temporal-crafting-mod.107533/
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*, .git\*
