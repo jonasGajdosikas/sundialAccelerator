@@ -1,20 +1,5 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Runtime.Serialization;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
-using Terraria.ModLoader.Config.UI;
-using Terraria.UI;
 
 namespace sundialAccelerator{
 
@@ -25,30 +10,43 @@ namespace sundialAccelerator{
         [Label("Maximum Banking")]
         [Tooltip("Maximum amount of days you can bank for accelerated crafting")]
         [DefaultValue(3)]
-		public int maxBanking{get;set;}
+		public int MaxBanking{get;set;}
 
         [Label("Tree recipes enabled")]
-        [Tooltip("Enable crafting wood from acorns where they would be grown")]
+        [Tooltip("Enable crafting wood from acorns where they would be grown\nRequires reload to take effect")]
         [DefaultValue(true)]
-        public bool treeRecipesEnabled { get; set; }
+        public bool TreeRecipesEnabled { get; set; }
+
+        [Label("Amount of wood on craft")]
+        [DefaultValue(15)]
+        public int AmountWoodOnCraft { get; set; }
 
         [Label("Herb recipes enabled")]
-        [Tooltip("Enable crafting herbs when and where they bloom")]
+        [Tooltip("Enable crafting herbs when and where they bloom\nRequires reload to take effect")]
         [DefaultValue(true)]
-        public bool herbRecipesEnabled { get; set; }
+        public bool HerbRecipesEnabled { get; set; }
+
+        [Label("Amount of herbs per craft")]
+        [Tooltip("Adjust the amount of herbs you get each time you accelerate time")]
+        [DefaultValue(6)]
+        public int AmountHerbsOnCraft { get; set; }
 
         [Label("Natural generated recipes enabled")]
-        [Tooltip("Enable crafting naturally generating resources")]
+        [Tooltip("Enable crafting naturally generating resources\nRequires reload to take effect")]
         [DefaultValue(true)]
-        public bool natRecipesEnabled { get; set; }
+        public bool NatRecipesEnabled { get; set; }
 
         [Label("Chlorophyte acceleration enabled")]
-        [Tooltip("Enable crafting chlorophyte and mud into more chlorophyte")]
+        [Tooltip("Enable crafting mud into chlorophyte\nRequires chlorophyte in inventory to craft\nRequires reload to take effect")]
         [DefaultValue(true)]
-        public bool chlorophyteEnabled { get; set; }
+        public bool ChlorophyteEnabled { get; set; }
 
         [Label("Days consumed by crafting chlorophyte")]
         [DefaultValue(2)]
-        public int chlorophyteDaysConsumed { get; set; }
+        public int ChlorophyteDaysConsumed { get; set; }
+
+        [Label("Amount of chlorophyte crafted")]
+        [DefaultValue(6)]
+        public int ChlorophyteAmountCraft { get; set; }
     }
 }

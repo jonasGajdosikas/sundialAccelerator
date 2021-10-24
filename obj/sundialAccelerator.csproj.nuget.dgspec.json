@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\sundialAccelerator.csproj": {}
+    "C:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\sundialAccelerator.csproj": {}
   },
   "projects": {
-    "c:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\sundialAccelerator.csproj": {
+    "C:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\sundialAccelerator.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\sundialAccelerator.csproj",
+        "projectUniqueName": "C:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\sundialAccelerator.csproj",
         "projectName": "sundialAccelerator",
-        "projectPath": "c:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\sundialAccelerator.csproj",
+        "projectPath": "C:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\sundialAccelerator.csproj",
         "packagesPath": "C:\\Users\\garfield\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\obj\\",
+        "outputPath": "C:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -49,7 +49,7 @@
               "version": "[0.1.*, )"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

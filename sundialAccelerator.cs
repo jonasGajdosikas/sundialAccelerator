@@ -1,3 +1,4 @@
+using System;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria;
@@ -5,9 +6,9 @@ using Terraria;
 namespace sundialAccelerator
 {
 
-	public class acceleratedRecipe : ModRecipe
+	public class AcceleratedRecipe : ModRecipe
     {
-        public acceleratedRecipe(Mod mod) : base(mod) {}
+        public AcceleratedRecipe(Mod mod) : base(mod) {}
 
         public override void OnCraft(Item item)
         {
@@ -15,75 +16,198 @@ namespace sundialAccelerator
         }
     }
 
-	public class chlorophyteAcceleration : acceleratedRecipe
+	public class ChlorophyteAcceleration : AcceleratedRecipe
 	{
-		public chlorophyteAcceleration(Mod mod) : base(mod) {}
+		public ChlorophyteAcceleration(Mod mod) : base(mod) {}
 
 		public override bool RecipeAvailable()
 		{
-			if (!ModContent.GetInstance<ConfigServer>().chlorophyteEnabled) return false;
-			return (Main.sundialCooldown <= ModContent.GetInstance<ConfigServer>().maxBanking);
+			if (!ModContent.GetInstance<ConfigServer>().ChlorophyteEnabled) return false;
+			return (Main.sundialCooldown <= ModContent.GetInstance<ConfigServer>().MaxBanking);
 		}
 
 		public override void OnCraft(Item item)
 		{
-			Main.sundialCooldown += ModContent.GetInstance<ConfigServer>().chlorophyteDaysConsumed;
+			Main.sundialCooldown += ModContent.GetInstance<ConfigServer>().ChlorophyteDaysConsumed;
+		}
+        public override int ConsumeItem(int type, int numRequired)
+        {
+			if (type == ItemID.ChlorophyteOre) return 0;
+            return base.ConsumeItem(type, numRequired);
+        }
+        public static void AddChlorophyteCraft()
+        {
+			ChlorophyteAcceleration cRecipe = new ChlorophyteAcceleration(ModContent.GetInstance<sundialAccelerator>());
+			cRecipe.AddIngredient(ItemID.ChlorophyteOre, 1);
+			cRecipe.AddIngredient(ItemID.MudBlock, ModContent.GetInstance<ConfigServer>().ChlorophyteAmountCraft - 1);
+			cRecipe.AddTile(TileID.Sundial);
+			cRecipe.SetResult(ItemID.ChlorophyteOre, ModContent.GetInstance<ConfigServer>().ChlorophyteAmountCraft - 1);
+			cRecipe.AddRecipe();
 		}
 	}
 
-	public class natRecipe : acceleratedRecipe
+	public class NatRecipe : AcceleratedRecipe
 	{
-		public natRecipe(Mod mod) : base(mod){}
+		readonly int CreateItemID;
+		public NatRecipe(Mod mod, int resultID) : base(mod) { CreateItemID = resultID; }
 
 		public override bool RecipeAvailable()
 		{
-			return (Main.sundialCooldown <= ModContent.GetInstance<ConfigServer>().maxBanking) && ModContent.GetInstance<ConfigServer>().natRecipesEnabled;
+			return (Main.sundialCooldown <= ModContent.GetInstance<ConfigServer>().MaxBanking) && IsCorrectZone();
+		}
+		bool IsCorrectZone()
+        {
+            switch (CreateItemID)
+            {
+				case ItemID.Coral:
+				case ItemID.Starfish:
+				case ItemID.Seashell:
+					return Main.player[Main.myPlayer].ZoneBeach;
+				case ItemID.CrystalShard:
+					return Main.player[Main.myPlayer].ZoneHoly && Main.player[Main.myPlayer].ZoneRockLayerHeight;
+				default:
+					return true;
+            }
+        }
+		public static void AddNaturalRecipe(int tileID, int resultItemID, int amt, int ingredientID = int.MinValue, bool needsWater = false)
+        {
+			NatRecipe recipe = new NatRecipe(ModContent.GetInstance<sundialAccelerator>(), resultItemID);
+			recipe.AddTile(TileID.Sundial);
+			recipe.AddTile(tileID);
+			recipe.SetResult(resultItemID, amt);
+			if (ingredientID != int.MinValue) recipe.AddIngredient(ingredientID);
+			recipe.needWater = needsWater;
+			recipe.AddRecipe();
+        }
+
+		static bool IsHalloween()
+        {
+			if (Main.halloween) return true;
+            else
+            {
+				DateTime now = DateTime.Now;
+				int day = now.Day;
+				int month = now.Month;
+				if (day >= 20 && month == 10)
+				{
+					return true;
+				}
+				else if (day <= 1 && month == 11)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+        }
+
+		public static void AddNaturalRecipes()
+        {
+			AddNaturalRecipe(TileID.Grass, ItemID.Pumpkin, 8, IsHalloween() ? int.MinValue : ItemID.PumpkinSeed);
+			AddNaturalRecipe(TileID.HallowedGrass, ItemID.Pumpkin, 8, IsHalloween() ? int.MinValue : ItemID.PumpkinSeed);
+			AddNaturalRecipe(TileID.Sand, ItemID.Coral, ModContent.GetInstance<ConfigServer>().AmountHerbsOnCraft, int.MinValue, true);
+			AddNaturalRecipe(TileID.Sand, ItemID.Starfish, 6, int.MinValue, true);
+			AddNaturalRecipe(TileID.Sand, ItemID.Seashell, 6, int.MinValue, true);
+			AddNaturalRecipe(TileID.Pearlstone, ItemID.CrystalShard, ModContent.GetInstance<ConfigServer>().AmountHerbsOnCraft);
+			AddNaturalRecipe(TileID.HallowedIce, ItemID.CrystalShard, ModContent.GetInstance<ConfigServer>().AmountHerbsOnCraft);
 		}
 	}
 
-	public class treeRecipe : acceleratedRecipe
+	public class TreeRecipe : AcceleratedRecipe
 	{
-		public treeRecipe(Mod mod) : base(mod) {}
+		public TreeRecipe(Mod mod) : base(mod) {}
 
 		public override bool RecipeAvailable()
 		{
-			if (!ModContent.GetInstance<ConfigServer>().treeRecipesEnabled) return false;
-			return (Main.sundialCooldown <= ModContent.GetInstance<ConfigServer>().maxBanking);
+			return (Main.sundialCooldown <= ModContent.GetInstance<ConfigServer>().MaxBanking) && Main.player[Main.myPlayer].ZoneOverworldHeight;
+		}
+		public static void AddTreeCraft(int tileID, int resultItemID)
+        {
+			TreeRecipe recipe = new TreeRecipe(ModContent.GetInstance<sundialAccelerator>());
+			recipe.AddIngredient(ItemID.Acorn);
+			recipe.AddTile(TileID.Sundial);
+			recipe.AddTile(tileID);
+			recipe.SetResult(resultItemID, ModContent.GetInstance<ConfigServer>().AmountWoodOnCraft);
+			recipe.AddRecipe();
+        }
+		public static void AddTreeRecipes()
+        {
+			AddTreeCraft(TileID.Grass, ItemID.Wood);
+			AddTreeCraft(TileID.SnowBlock, ItemID.BorealWood);
+			AddTreeCraft(TileID.Sand, ItemID.PalmWood);
+			AddTreeCraft(TileID.JungleGrass, ItemID.RichMahogany);
+			AddTreeCraft(TileID.FleshGrass, ItemID.Shadewood);
+			AddTreeCraft(TileID.CorruptGrass, ItemID.Ebonwood);
+			AddTreeCraft(TileID.HallowedGrass, ItemID.Pearlwood);
 		}
 	}
 
-	public class herbRecipe : acceleratedRecipe
+	public class HerbRecipe : AcceleratedRecipe
 	{
-		string herb;
-		public herbRecipe(Mod mod, string herbName) : base(mod)
-		{
-			herb = herbName;
-		}
+		readonly int CreateItemID;
+		public HerbRecipe(Mod mod, int resultItemID) : base(mod) { CreateItemID = resultItemID; }
 
 		public override bool RecipeAvailable(){
-			if (!ModContent.GetInstance<ConfigServer>().herbRecipesEnabled) return false;
-			if (Main.sundialCooldown > ModContent.GetInstance<ConfigServer>().maxBanking) return false;
-			switch(herb) 
+			return IsHerbBlooming() && (Main.sundialCooldown <= ModContent.GetInstance<ConfigServer>().MaxBanking);
+		}
+		public bool IsHerbBlooming()
+        {
+			switch (CreateItemID)
 			{
 				//blinkroot and shiverthorn omitted as they don't have specific bloom conditions
 				//conditions found in Terraria.WorldGen.KillTile part to give seeds
-				case "daybloom":
+				case ItemID.Blinkroot:
+					return Main.player[Main.myPlayer].ZoneDirtLayerHeight || Main.player[Main.myPlayer].ZoneRockLayerHeight;
+				case ItemID.Daybloom:
 					return Main.dayTime;
-				case "moonglow":
+				case ItemID.Moonglow:
 					return !Main.dayTime;
-				case "deathweed":
+				case ItemID.Deathweed:
 					return (!Main.dayTime && (Main.bloodMoon || Main.moonPhase == 0));
-				case "waterleaf":
+				case ItemID.Waterleaf:
 					return (Main.raining || Main.cloudAlpha > 0f);
-				case "fireblossom":
+				case ItemID.Fireblossom:
 					return (!Main.raining && Main.dayTime && Main.time > 40500.0);
-				case "beach":
-					return Main.player[Main.myPlayer].ZoneBeach;
-				case "cactus":
+				case ItemID.Cactus:
 					return !Main.player[Main.myPlayer].ZoneBeach;
+				case ItemID.Mushroom:
+					return Main.player[Main.myPlayer].ZoneOverworldHeight;
+				case ItemID.GlowingMushroom:
+					return Main.player[Main.myPlayer].ZoneGlowshroom;
 				default:
 					return true;
 			}
+		}
+		public static void AddHerbRecipe(int tileID, int resultID)
+        {
+			HerbRecipe recipe = new HerbRecipe(ModContent.GetInstance<sundialAccelerator>(), resultID);
+			recipe.AddTile(TileID.Sundial);
+			recipe.AddTile(tileID);
+			recipe.SetResult(resultID, ModContent.GetInstance<ConfigServer>().AmountHerbsOnCraft);
+			recipe.AddRecipe();
+        }
+		public static void AddHerbRecipe(int[] tileIDs, int resultID)
+        {
+			foreach (int tileID in tileIDs) AddHerbRecipe(tileID, resultID);
+        }
+		public static void AddHerbRecipes()
+        {
+			AddHerbRecipe(TileID.Grass, ItemID.Daybloom);
+			AddHerbRecipe(TileID.HallowedGrass, ItemID.Daybloom);
+			AddHerbRecipe(TileID.JungleGrass, ItemID.Moonglow);
+			AddHerbRecipe(TileID.Dirt, ItemID.Blinkroot);
+			int[] DeathweedTiles = new int[] { TileID.CorruptGrass, TileID.Ebonstone, TileID.FleshGrass, TileID.Crimstone };
+			AddHerbRecipe(DeathweedTiles, ItemID.Deathweed);
+            int[] WaterleafTiles = new int[] { TileID.Sand, TileID.Pearlsand };
+			AddHerbRecipe(WaterleafTiles, ItemID.Waterleaf);
+			AddHerbRecipe(TileID.Ash, ItemID.Fireblossom);
+			int[] ShiverthornTiles = new int[] { TileID.SnowBlock, TileID.IceBlock, TileID.CorruptIce, TileID.FleshIce, TileID.HallowedIce };
+			AddHerbRecipe(ShiverthornTiles, ItemID.Shiverthorn);
+			AddHerbRecipe(TileID.Sand, ItemID.Cactus);
+			AddHerbRecipe(TileID.MushroomGrass, ItemID.GlowingMushroom);
+			AddHerbRecipe(TileID.Grass, ItemID.Mushroom);
 		}
 	}
 
@@ -94,173 +218,21 @@ namespace sundialAccelerator
 		{
 			Logger.InfoFormat("{0} example logging", Name);
 		}
-
-		public override void Unload() 
+        public override void PostSetupContent()
+        {
+            
+        }
+        public override void Unload() 
 		{
 
 		}
 
 		public override void AddRecipes()
         {
-			herbRecipe hRecipe = new herbRecipe(this, "daybloom");
-			hRecipe.AddTile(TileID.Sundial);
-			hRecipe.AddTile(TileID.Grass);
-			hRecipe.SetResult(ItemID.Daybloom, 15);
-			hRecipe.AddRecipe();
-
-			hRecipe = new herbRecipe(this, "daybloom");
-			hRecipe.AddTile(TileID.Sundial);
-			hRecipe.AddTile(TileID.HallowedGrass);
-			hRecipe.SetResult(ItemID.Daybloom, 15);
-			hRecipe.AddRecipe();
-
-			hRecipe = new herbRecipe(this, "moonglow");
-			hRecipe.AddTile(TileID.Sundial);
-			hRecipe.AddTile(TileID.JungleGrass);
-			hRecipe.SetResult(ItemID.Moonglow, 15);
-			hRecipe.AddRecipe();
-
-			hRecipe = new herbRecipe(this, "blinkroot");
-			hRecipe.AddTile(TileID.Sundial);
-			hRecipe.AddTile(TileID.Dirt);
-			hRecipe.SetResult(ItemID.Blinkroot, 15);
-			hRecipe.AddRecipe();
-
-			hRecipe = new herbRecipe(this, "blinkroot");
-			hRecipe.AddTile(TileID.Sundial);
-			hRecipe.AddTile(TileID.Mud);
-			hRecipe.SetResult(ItemID.Blinkroot, 15);
-			hRecipe.AddRecipe();
-
-			hRecipe = new herbRecipe(this, "deathweed");
-			hRecipe.AddTile(TileID.Sundial);
-			hRecipe.AddTile(TileID.CorruptGrass);
-			hRecipe.SetResult(ItemID.Deathweed, 15);
-			hRecipe.AddRecipe();
-
-			hRecipe = new herbRecipe(this, "deathweed");
-			hRecipe.AddTile(TileID.Sundial);
-			hRecipe.AddTile(TileID.FleshGrass);
-			hRecipe.SetResult(ItemID.Deathweed, 15);
-			hRecipe.AddRecipe();
-
-			hRecipe = new herbRecipe(this, "waterleaf");
-			hRecipe.AddTile(TileID.Sundial);
-			hRecipe.AddTile(TileID.Sand);
-			hRecipe.SetResult(ItemID.Waterleaf, 15);
-			hRecipe.AddRecipe();
-
-			hRecipe = new herbRecipe(this, "waterleaf");
-			hRecipe.AddTile(TileID.Sundial);
-			hRecipe.AddTile(TileID.Pearlsand);
-			hRecipe.SetResult(ItemID.Waterleaf, 15);
-			hRecipe.AddRecipe();
-
-			hRecipe = new herbRecipe(this, "fireblossom");
-			hRecipe.AddTile(TileID.Sundial);
-			hRecipe.AddTile(TileID.Ash);
-			hRecipe.SetResult(ItemID.Fireblossom, 15);
-			hRecipe.AddRecipe();
-
-			hRecipe = new herbRecipe(this, "shiverthorn");
-			hRecipe.AddTile(TileID.Sundial);
-			hRecipe.AddTile(TileID.SnowBlock);
-			hRecipe.SetResult(ItemID.Shiverthorn, 15);
-			hRecipe.AddRecipe();
-
-			hRecipe = new herbRecipe(this, "beach");
-			hRecipe.AddTile(TileID.Sundial);
-			hRecipe.AddTile(TileID.Sand);
-			hRecipe.SetResult(ItemID.Seashell, 16);
-			hRecipe.AddRecipe();
-
-			hRecipe = new herbRecipe(this, "beach");
-			hRecipe.AddTile(TileID.Sundial);
-			hRecipe.AddTile(TileID.Sand);
-			hRecipe.SetResult(ItemID.Starfish, 16);
-			hRecipe.AddRecipe();
-			
-			hRecipe = new herbRecipe(this, "cactus");
-			hRecipe.AddTile(TileID.Sundial);
-			hRecipe.AddTile(TileID.Sand);
-			hRecipe.SetResult(ItemID.Cactus, 16);
-			hRecipe.AddRecipe();
-
-            chlorophyteAcceleration cRecipe = new chlorophyteAcceleration(this);
-            cRecipe.AddIngredient(ItemID.ChlorophyteOre, 1);
-			cRecipe.AddIngredient(ItemID.MudBlock, 17);
-            cRecipe.AddTile(TileID.Sundial);
-            cRecipe.SetResult(ItemID.ChlorophyteOre, 18);
-            cRecipe.AddRecipe();
-
-			treeRecipe woodRecipe = new treeRecipe(this);
-			woodRecipe.AddIngredient(ItemID.Acorn, 1);
-			woodRecipe.AddTile(TileID.Sundial);
-			woodRecipe.AddTile(TileID.Grass);
-			woodRecipe.SetResult(ItemID.Wood, 16);
-			woodRecipe.AddRecipe();
-
-			woodRecipe = new treeRecipe(this);
-			woodRecipe.AddIngredient(ItemID.Acorn, 1);
-			woodRecipe.AddTile(TileID.Sundial);
-			woodRecipe.AddTile(TileID.SnowBlock);
-			woodRecipe.SetResult(ItemID.BorealWood, 16);
-			woodRecipe.AddRecipe();
-
-			woodRecipe = new treeRecipe(this);
-			woodRecipe.AddIngredient(ItemID.Acorn, 1);
-			woodRecipe.AddTile(TileID.Sundial);
-			woodRecipe.AddTile(TileID.Sand);
-			woodRecipe.SetResult(ItemID.PalmWood, 16);
-			woodRecipe.AddRecipe();
-
-			woodRecipe = new treeRecipe(this);
-			woodRecipe.AddIngredient(ItemID.Acorn, 1);
-			woodRecipe.AddTile(TileID.Sundial);
-			woodRecipe.AddTile(TileID.JungleGrass);
-			woodRecipe.SetResult(ItemID.RichMahogany, 16);
-			woodRecipe.AddRecipe();
-
-			woodRecipe = new treeRecipe(this);
-			woodRecipe.AddIngredient(ItemID.Acorn, 1);
-			woodRecipe.AddTile(TileID.Sundial);
-			woodRecipe.AddTile(TileID.FleshGrass);
-			woodRecipe.SetResult(ItemID.Shadewood, 16);
-			woodRecipe.AddRecipe();
-
-			woodRecipe = new treeRecipe(this);
-			woodRecipe.AddIngredient(ItemID.Acorn, 1);
-			woodRecipe.AddTile(TileID.Sundial);
-			woodRecipe.AddTile(TileID.CorruptGrass);
-			woodRecipe.SetResult(ItemID.Ebonwood, 16);
-			woodRecipe.AddRecipe();
-
-			woodRecipe = new treeRecipe(this);
-			woodRecipe.AddIngredient(ItemID.Acorn, 1);
-			woodRecipe.AddTile(TileID.Sundial);
-			woodRecipe.AddTile(TileID.HallowedGrass);
-			woodRecipe.SetResult(ItemID.Pearlwood, 16);
-			woodRecipe.AddRecipe();
-
-			natRecipe recipe = new natRecipe(this);
-			recipe.AddTile(TileID.Sundial);
-			recipe.AddTile(TileID.MushroomGrass);
-			recipe.SetResult(ItemID.GlowingMushroom, 16);
-			recipe.AddRecipe();
-
-			recipe = new natRecipe(this);
-			recipe.AddIngredient(ItemID.PumpkinSeed, 1);
-			recipe.AddTile(TileID.Sundial);
-			recipe.SetResult(ItemID.Pumpkin, 8);
-			recipe.AddRecipe();
-
-			recipe = new natRecipe(this);
-			recipe.AddTile(TileID.Sundial);
-			recipe.AddTile(TileID.Sand);
-			recipe.needWater = true;
-			recipe.SetResult(ItemID.Coral, 16);
-			recipe.AddRecipe();
-
-        }
+			if (ModContent.GetInstance<ConfigServer>().HerbRecipesEnabled) HerbRecipe.AddHerbRecipes();
+			if (ModContent.GetInstance<ConfigServer>().ChlorophyteEnabled) ChlorophyteAcceleration.AddChlorophyteCraft();
+			if (ModContent.GetInstance<ConfigServer>().TreeRecipesEnabled) TreeRecipe.AddTreeRecipes();
+			if (ModContent.GetInstance<ConfigServer>().NatRecipesEnabled) NatRecipe.AddNaturalRecipes();
+		}
 	}
 }

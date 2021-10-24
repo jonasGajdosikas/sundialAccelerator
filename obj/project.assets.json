@@ -2,23 +2,23 @@
   "version": 3,
   "targets": {
     ".NETFramework,Version=v4.5": {
-      "tModLoader.CodeAssist/0.1.2": {
+      "tModLoader.CodeAssist/0.1.3": {
         "type": "package"
       }
     }
   },
   "libraries": {
-    "tModLoader.CodeAssist/0.1.2": {
-      "sha512": "o43lkrLmnOojQxVgmhmyAhCZV7DxL3gvcCaZvL7GcG7NH6hcyzSHFTM7tntoGthmx2OmOH8BUx1hZDhNhADV8Q==",
+    "tModLoader.CodeAssist/0.1.3": {
+      "sha512": "2TVpwEsbJF+LZOGZ7q/VTTcsnFnQzngjVOcwkzGlXimFXEMjPROLjDv32F/eA+k2MLHtdL0DJ0JNWudUVs70fw==",
       "type": "package",
-      "path": "tmodloader.codeassist/0.1.2",
+      "path": "tmodloader.codeassist/0.1.3",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "NugetIcon.png",
         "analyzers/dotnet/cs/tModLoader.CodeAssist.dll",
-        "tmodloader.codeassist.0.1.2.nupkg.sha512",
+        "tmodloader.codeassist.0.1.3.nupkg.sha512",
         "tmodloader.codeassist.nuspec",
         "tools/install.ps1",
         "tools/uninstall.ps1"
@@ -37,11 +37,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\sundialAccelerator.csproj",
+      "projectUniqueName": "C:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\sundialAccelerator.csproj",
       "projectName": "sundialAccelerator",
-      "projectPath": "c:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\sundialAccelerator.csproj",
+      "projectPath": "C:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\sundialAccelerator.csproj",
       "packagesPath": "C:\\Users\\garfield\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\obj\\",
+      "outputPath": "C:\\Users\\garfield\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\sundialAccelerator\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -79,7 +79,7 @@
             "version": "[0.1.*, )"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   }
